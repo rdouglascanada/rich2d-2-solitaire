@@ -1,5 +1,6 @@
 from rich2d.game import Game, GameConfig
 from rich2d.models import Model
+from rich2d.handlers import MouseHandler
 from card import Card
 from card_sprite import CardSprite
 from card_image_sheet import CardImageSheet
@@ -53,11 +54,24 @@ klondike7_sprite = CardSprite(card=Card(rank=8, suit=Card.Suit.CLUBS), card_imag
                               rect=(690, 200, 80, 120), shown=False)
 
 
+def draw_card():
+    if not deck_collection.is_empty():
+        draw_collection.insert(deck_collection.draw())
+    else:
+        while not draw_collection.is_empty():
+            deck_collection.insert(draw_collection.draw())
+    return
+
+
+draw_handler = MouseHandler(rect=deck_collection_sprite.get_rect(), on_left_mouse_click=draw_card)
+
+
 sprites = [deck_collection_sprite, draw_collection_sprite,
            suit1_collection_sprite, suit2_collection_sprite, suit3_collection_sprite, suit4_collection_sprite,
            klondike1_sprite, klondike2_sprite, klondike3_sprite, klondike4_sprite,
            klondike5_sprite, klondike6_sprite, klondike7_sprite]
+handlers = [draw_handler]
 
-game_model = Model(sprites=sprites)
+game_model = Model(sprites=sprites, handlers=handlers)
 solitaire_game = Game(model=game_model, config=game_config)
 solitaire_game.run()
