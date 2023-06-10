@@ -2,6 +2,7 @@ from rich2d.game import Game, GameConfig
 from rich2d.models import Model
 from rich2d.handlers import MouseHandler
 from card import Card
+from deck import Deck
 from card_sprite import CardSprite
 from card_image_sheet import CardImageSheet
 from card_collection import CardCollection
@@ -13,8 +14,10 @@ game_config = GameConfig(window_width=window_width, window_height=window_height,
                          window_title="Solitaire", background_colour="darkgreen")
 
 card_images = CardImageSheet(file_name="resources/card_sheets/old_windows.png", image_width=71, image_height=96)
+deck = Deck()
+deck.shuffle()
 
-deck_collection = CardCollection(cards=[Card(rank=13, suit=Card.Suit.HEARTS)])
+deck_collection = CardCollection(cards=deck.get_cards())
 deck_collection_sprite = CardCollectionSprite(card_collection=deck_collection, card_image_sheet=card_images,
                                               rect=(30, 50, 80, 120), shown=False)
 draw_collection = CardCollection(cards=[])
