@@ -12,13 +12,17 @@ game_config = GameConfig(window_width=window_width, window_height=window_height,
                          window_title="Solitaire", background_colour="darkgreen")
 
 card_images = CardImageSheet(file_name="resources/card_sheets/old_windows.png", image_width=71, image_height=96)
+deck_collection_background_image = Image.load_from_file("resources/deck_background.png")
 card_collection_background_image = Image.load_from_file("resources/empty_collection.png")
+
 deck = Deck()
 deck.shuffle()
 
 deck_collection = CardCollection(cards=deck.get_cards())
 deck_collection_sprite = CardCollectionSprite(card_collection=deck_collection, card_image_sheet=card_images,
                                               rect=(30, 50, 80, 120), shown=False)
+deck_collection_background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=deck_collection_sprite,
+                                                                   background_image=deck_collection_background_image)
 draw_collection = CardCollection(cards=[])
 draw_collection_sprite = CardCollectionSprite(card_collection=draw_collection, card_image_sheet=card_images,
                                               rect=(140, 50, 80, 120), shown=True)
@@ -140,7 +144,7 @@ suit_collection_handlers = [suit_collection_handler(suit_collection_sprite)
                              suit3_collection_sprite, suit4_collection_sprite]]
 
 
-sprites = [deck_collection_sprite, draw_collection_sprite,
+sprites = [deck_collection_background_sprite, deck_collection_sprite, draw_collection_sprite,
            suit1_collection_background_sprite, suit2_collection_background_sprite,
            suit3_collection_background_sprite, suit4_collection_background_sprite,
            suit1_collection_sprite, suit2_collection_sprite, suit3_collection_sprite, suit4_collection_sprite,
