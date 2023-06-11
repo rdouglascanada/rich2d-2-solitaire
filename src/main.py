@@ -1,8 +1,9 @@
 from rich2d.game import Game, GameConfig
-from rich2d.models import Model
+from rich2d.models import Model, ModelGroup
 from rich2d.handlers import MouseHandler
 from cards import Card, Deck, CardCollection
 from sprites import CardSprite, CardImageSheet, CardCollectionSprite
+from selection_model import SelectionModel
 
 window_width = 800
 window_height = 600
@@ -52,6 +53,56 @@ klondike6_sprite = CardSprite(card=Card(rank=7, suit=Card.Suit.CLUBS), card_imag
 klondike7_sprite = CardSprite(card=Card(rank=8, suit=Card.Suit.CLUBS), card_image_sheet=card_images,
                               rect=(690, 200, 80, 120), shown=False)
 
+selection_model = SelectionModel(card_image_sheet=card_images)
+
+
+def suit_collection_handler(suit_collection_sprite):
+    def on_click():
+        if selection_model.is_empty():
+            card_collection = suit_collection_sprite.get_card_collection()
+            if not card_collection.is_empty():
+                card = card_collection.draw()
+                selection_model.add_card(card, shown=True)
+                selection_model.set_last_selected_collection(card_collection)
+        return
+
+    def on_release():
+        if selection_model.is_empty():
+            return
+        if len(selection_model) > 1:
+            undo_selection()
+        selected_card = selection_model.remove_all()[0]
+        suit_collection = suit_collection_sprite.get_card_collection()
+        last_selected_collection = selection_model.get_last_selected_collection()
+
+        if suit_collection.is_empty() and selected_card.get_rank() != 1:
+            last_selected_collection.insert(selected_card)
+        elif suit_collection.is_empty():
+            suit_collection.insert(selected_card)
+        else:
+            top_card = suit_collection.peek()
+            correct_suit = top_card.get_suit() == selected_card.get_suit()
+            correct_rank = top_card.get_rank() + 1 == selected_card.get_rank()
+            if correct_rank and correct_suit:
+                suit_collection.insert(selected_card)
+            else:
+                last_selected_collection.insert(selected_card)
+        return
+
+    return MouseHandler(rect=suit_collection_sprite.get_rect(),
+                        on_left_mouse_click=on_click,
+                        on_left_mouse_release=on_release)
+
+
+def undo_selection():
+    if selection_model.is_empty():
+        return
+    selected_cards = selection_model.remove_all()
+    last_selected_collection = selection_model.get_last_selected_collection()
+    for card in selected_cards:
+        last_selected_collection.insert(card)
+    return
+
 
 def draw_card():
     if not deck_collection.is_empty():
@@ -62,15 +113,20 @@ def draw_card():
     return
 
 
+default_on_release_handler = MouseHandler(on_left_mouse_release=undo_selection)
 draw_handler = MouseHandler(rect=deck_collection_sprite.get_rect(), on_left_mouse_click=draw_card)
+suit_collection_handlers = [suit_collection_handler(suit_collection_sprite)
+                            for suit_collection_sprite in
+                            [suit1_collection_sprite, suit2_collection_sprite,
+                             suit3_collection_sprite, suit4_collection_sprite]]
 
 
 sprites = [deck_collection_sprite, draw_collection_sprite,
            suit1_collection_sprite, suit2_collection_sprite, suit3_collection_sprite, suit4_collection_sprite,
            klondike1_sprite, klondike2_sprite, klondike3_sprite, klondike4_sprite,
            klondike5_sprite, klondike6_sprite, klondike7_sprite]
-handlers = [draw_handler]
+handlers = suit_collection_handlers + [draw_handler, default_on_release_handler]
 
-game_model = Model(sprites=sprites, handlers=handlers)
+game_model = ModelGroup(models=[Model(sprites=sprites, handlers=handlers), selection_model])
 solitaire_game = Game(model=game_model, config=game_config)
 solitaire_game.run()

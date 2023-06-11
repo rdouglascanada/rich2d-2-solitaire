@@ -29,6 +29,9 @@ class CardSprite(Sprite):
             self._back_sprite.draw(screen)
         return
 
+    def get_card(self):
+        return self._card
+
     def is_shown(self):
         return self._shown
 
