@@ -1,6 +1,6 @@
 from rich2d.sprites import Sprite
-from card_sprite import CardSprite
-from card_collection import CardCollection
+from .card_sprite import CardSprite
+from cards import CardCollection
 
 
 class CardCollectionSprite(Sprite):

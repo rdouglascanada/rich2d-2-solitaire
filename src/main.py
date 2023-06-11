@@ -1,12 +1,8 @@
 from rich2d.game import Game, GameConfig
 from rich2d.models import Model
 from rich2d.handlers import MouseHandler
-from card import Card
-from deck import Deck
-from card_sprite import CardSprite
-from card_image_sheet import CardImageSheet
-from card_collection import CardCollection
-from card_collection_sprite import CardCollectionSprite
+from cards import Card, Deck, CardCollection
+from sprites import CardSprite, CardImageSheet, CardCollectionSprite
 
 window_width = 800
 window_height = 600

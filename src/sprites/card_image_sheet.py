@@ -1,5 +1,5 @@
 from rich2d.sprites.images import ImageSheet
-from card import Card
+from cards import Card
 
 
 class CardImageSheet:
