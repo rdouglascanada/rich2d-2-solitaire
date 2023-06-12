@@ -51,13 +51,6 @@ class SelectionModel(Model):
         self._last_selected_collection = card_collection
         return
 
-    def get_card_sprite_to_show(self):
-        return self._card_sprite_to_show
-
-    def set_card_sprite_to_show(self, card_sprite_to_show):
-        self._card_sprite_to_show = card_sprite_to_show
-        return
-
     def add_card(self, card, shown=True):
         card_sprite = CardSprite(card=card, rect=(0, 0, 0, 0),
                                  card_image_sheet=self._card_image_sheet, shown=shown)

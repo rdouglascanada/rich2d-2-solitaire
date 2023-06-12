@@ -36,28 +36,28 @@ class KlondikePileModel(Model):
         self._sync_click_handler_rect_element = Element(on_update=sync_click_handler_rects)
         return
 
-    def insert(self, card, shown=True):
-        card_sprite = CardSprite(rect=(0, 0, 0, 0), shown=shown,
+    def get_card_collection(self):
+        return self
+
+    def insert(self, card):
+        card_sprite = CardSprite(rect=(0, 0, 0, 0), shown=True,
                                  card=card, card_image_sheet=self._card_image_sheet)
         self._pile.add(card_sprite)
-        if shown:
-            def on_click():
-                if self._selection_model.is_empty():
-                    removed_card_sprites = self._pile.remove_after_and_including(card_sprite)
-                    for rcs in removed_card_sprites:
-                        self._on_click_handlers.pop(0)
-                        self._selection_model.add_card(rcs.get_card())
-                    card_sprite_to_show = None
-                    if not self._pile.is_empty():
-                        card_sprite_to_show = self._pile.get_entries()[-1]
-                    self._selection_model.set_card_sprite_to_show(card_sprite_to_show)
-                return
 
-            handler = MouseHandler(rect=(0, 0, 0, 0), on_left_mouse_click=on_click)
-            self._on_click_handlers_map.insert(0, {
-                'handler': handler,
-                'card_sprite': card_sprite
-            })
+        def on_click():
+            if self._selection_model.is_empty():
+                removed_card_sprites = self._pile.remove_after_and_including(card_sprite)
+                for rcs in removed_card_sprites:
+                    self._on_click_handlers_map.pop(0)
+                    self._selection_model.add_card(rcs.get_card())
+                self._selection_model.set_last_selected_collection(self)
+            return
+
+        handler = MouseHandler(rect=(0, 0, 0, 0), on_left_mouse_click=on_click)
+        self._on_click_handlers_map.insert(0, {
+            'handler': handler,
+            'card_sprite': card_sprite
+        })
         return
 
     def get_rect(self):
@@ -70,4 +70,4 @@ class KlondikePileModel(Model):
         return tuple([self._pile_element, self._sync_click_handler_rect_element])
 
     def get_handlers(self):
-        return tuple(value['handler'] for value in self._on_click_handlers_map)
+        return tuple(value['handler'] for value in self._on_click_handlers_map if value['card_sprite'].is_shown())
