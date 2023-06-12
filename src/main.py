@@ -48,12 +48,13 @@ deck.shuffle()
 cards = deck.get_cards()
 c = 0
 
-for i in range(7):
+for i in range(len(klondike_pile_models)):
     klondike_pile_model = klondike_pile_models[i]
     klondike_card_collection = klondike_pile_model.get_card_collection()
     for j in range(i + 1):
         klondike_card_collection.insert(cards[c])
         c += 1
+    klondike_pile_model.hide_all_but_last()
 
 
 deck_card_collection = deck_collection_model.get_card_collection()

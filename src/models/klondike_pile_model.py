@@ -39,6 +39,11 @@ class KlondikePileModel(Model):
     def get_card_collection(self):
         return self
 
+    def hide_all_but_last(self):
+        for card_sprite in self._pile.get_entries()[:-1]:
+            card_sprite.hide()
+        return
+
     def insert(self, card):
         card_sprite = CardSprite(rect=(0, 0, 0, 0), shown=True,
                                  card=card, card_image_sheet=self._card_image_sheet)
