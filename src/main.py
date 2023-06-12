@@ -2,11 +2,9 @@ from rich2d.game import Game, GameConfig
 from rich2d.models import Model, ModelGroup
 from rich2d.handlers import MouseHandler
 from rich2d.sprites.images import Image
-from cards import Card, Deck, CardCollection
-from sprites import CardSprite, CardImageSheet, CardCollectionSprite, CardCollectionBackgroundSprite
-from selection_model import SelectionModel
-from suit_collection_model import SuitCollectionModel
-from klondike_pile_model import KlondikePileModel
+from cards import Deck, CardCollection
+from sprites import CardImageSheet, CardCollectionSprite, CardCollectionBackgroundSprite
+from models import SelectionModel, SuitCollectionModel, KlondikePileModel
 
 window_width = 800
 window_height = 600
