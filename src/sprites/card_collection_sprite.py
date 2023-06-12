@@ -4,11 +4,13 @@ from cards import CardCollection
 
 
 class CardCollectionSprite(Sprite):
-    def __init__(self, rect=None, card_image_sheet=None, card_collection=CardCollection(), shown=True):
+    def __init__(self, rect=None, card_image_sheet=None, card_collection=None, shown=True):
         if rect is None:
             raise RuntimeError("CardCollectionSprite rect cannot be None")
         if card_image_sheet is None:
             raise RuntimeError("CardCollectionSprite card_image_sheet cannot be None")
+        if card_collection is None:
+            card_collection = CardCollection()
         super().__init__(rect=rect)
         self._card_image_sheet = card_image_sheet
         self._card_collection = card_collection

@@ -13,6 +13,7 @@ game_config = GameConfig(window_width=window_width, window_height=window_height,
                          window_title="Solitaire", background_colour="darkgreen")
 
 card_images = CardImageSheet(file_name="resources/card_sheets/old_windows.png", image_width=71, image_height=96)
+
 deck_collection_background_image = Image.load_from_file("resources/deck_background.png")
 card_collection_background_image = Image.load_from_file("resources/empty_collection.png")
 
@@ -28,26 +29,16 @@ draw_collection = CardCollection(cards=[])
 draw_collection_sprite = CardCollectionSprite(card_collection=draw_collection, card_image_sheet=card_images,
                                               rect=(140, 50, 80, 120), shown=True)
 
-suit1_collection = CardCollection()
-suit1_collection_sprite = CardCollectionSprite(card_collection=suit1_collection, card_image_sheet=card_images,
-                                               rect=(360, 50, 80, 120), shown=True)
-suit1_collection_background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=suit1_collection_sprite,
-                                                                    background_image=card_collection_background_image)
-suit2_collection = CardCollection()
-suit2_collection_sprite = CardCollectionSprite(card_collection=suit2_collection, card_image_sheet=card_images,
-                                               rect=(470, 50, 80, 120), shown=True)
-suit2_collection_background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=suit2_collection_sprite,
-                                                                    background_image=card_collection_background_image)
-suit3_collection = CardCollection()
-suit3_collection_sprite = CardCollectionSprite(card_collection=suit3_collection, card_image_sheet=card_images,
-                                               rect=(580, 50, 80, 120), shown=True)
-suit3_collection_background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=suit3_collection_sprite,
-                                                                    background_image=card_collection_background_image)
-suit4_collection = CardCollection()
-suit4_collection_sprite = CardCollectionSprite(card_collection=suit4_collection, card_image_sheet=card_images,
-                                               rect=(690, 50, 80, 120), shown=True)
-suit4_collection_background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=suit4_collection_sprite,
-                                                                    background_image=card_collection_background_image)
+suit_collection_sprites = []
+suit_collection_background_sprites = []
+suit_collection_rects = [(360, 50, 80, 120), (470, 50, 80, 120), (580, 50, 80, 120), (690, 50, 80, 120)]
+for suit_collection_rect in suit_collection_rects:
+    suit_collection_sprite = CardCollectionSprite(card_image_sheet=card_images, rect=suit_collection_rect, shown=True)
+    suit_collection_sprites.append(suit_collection_sprite)
+    suit_collection_background_sprite = CardCollectionBackgroundSprite(
+        card_collection_sprite=suit_collection_sprite,
+        background_image=card_collection_background_image)
+    suit_collection_background_sprites.append(suit_collection_background_sprite)
 
 selection_model = SelectionModel(card_image_sheet=card_images)
 
@@ -71,10 +62,10 @@ def on_draw_collection_click():
     return
 
 
-def suit_collection_handler(suit_collection_sprite):
+def suit_collection_handler(collection_sprite):
     def on_click():
         if selection_model.is_empty():
-            card_collection = suit_collection_sprite.get_card_collection()
+            card_collection = collection_sprite.get_card_collection()
             if not card_collection.is_empty():
                 card = card_collection.draw()
                 selection_model.add_card(card, shown=True)
@@ -87,7 +78,7 @@ def suit_collection_handler(suit_collection_sprite):
         if len(selection_model) > 1:
             undo_selection()
         selected_card = selection_model.remove_all()[0]
-        suit_collection = suit_collection_sprite.get_card_collection()
+        suit_collection = collection_sprite.get_card_collection()
         last_selected_collection = selection_model.get_last_selected_collection()
 
         if suit_collection.is_empty() and selected_card.get_rank() != 1:
@@ -104,7 +95,7 @@ def suit_collection_handler(suit_collection_sprite):
                 last_selected_collection.insert(selected_card)
         return
 
-    return MouseHandler(rect=suit_collection_sprite.get_rect(),
+    return MouseHandler(rect=collection_sprite.get_rect(),
                         on_left_mouse_click=on_click,
                         on_left_mouse_release=on_release)
 
@@ -134,15 +125,11 @@ deck_collection_handler = MouseHandler(rect=deck_collection_sprite.get_rect(),
 draw_collection_handler = MouseHandler(rect=draw_collection_sprite.get_rect(),
                                        on_left_mouse_click=on_draw_collection_click)
 suit_collection_handlers = [suit_collection_handler(suit_collection_sprite)
-                            for suit_collection_sprite in
-                            [suit1_collection_sprite, suit2_collection_sprite,
-                             suit3_collection_sprite, suit4_collection_sprite]]
+                            for suit_collection_sprite in suit_collection_sprites]
 
 
-sprites = [deck_collection_background_sprite, deck_collection_sprite, draw_collection_sprite,
-           suit1_collection_background_sprite, suit2_collection_background_sprite,
-           suit3_collection_background_sprite, suit4_collection_background_sprite,
-           suit1_collection_sprite, suit2_collection_sprite, suit3_collection_sprite, suit4_collection_sprite]
+sprites = [deck_collection_background_sprite, deck_collection_sprite, draw_collection_sprite]\
+          + suit_collection_background_sprites + suit_collection_sprites
 handlers = suit_collection_handlers + [deck_collection_handler, draw_collection_handler, default_on_release_handler]
 
 game_model = ModelGroup(models=klondike_pile_models + [Model(sprites=sprites, handlers=handlers), selection_model])
