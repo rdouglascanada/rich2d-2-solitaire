@@ -1,22 +1,28 @@
+import pygame
 from rich2d.models import Model
 from rich2d.elements import Element
 from rich2d.elements.pile import Pile, PileElement
 from rich2d.handlers import MouseHandler
-from sprites import CardSprite
+from sprites import CardSprite, CardCollectionBackgroundSprite
 
 
 class KlondikePileModel(Model):
-    def __init__(self, rect=None, selection_model=None, card_image_sheet=None):
+    def __init__(self, rect=None, selection_model=None, card_image_sheet=None, background_image=None):
         if rect is None:
             raise RuntimeError("KlondikePileModel rect cannot be None")
         if selection_model is None:
             raise RuntimeError("KlondikePileModel selection_model cannot be None")
         if card_image_sheet is None:
             raise RuntimeError("KlondikePileModel card_image_sheet cannot be None")
+        if background_image is None:
+            raise RuntimeError("KlondikePileModel background_image cannot be None")
+        self._rect = pygame.Rect(rect)
         self._pile = Pile(rect=rect)
         self._pile_element = PileElement(pile=self._pile,
                                          direction=PileElement.PileElementDirection.DOWN,
                                          spacing=20)
+        self._background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=self,
+                                                                 background_image=background_image)
         self._selection_model = selection_model
         self._card_image_sheet = card_image_sheet
         self._on_click_handlers_map = []
@@ -54,8 +60,11 @@ class KlondikePileModel(Model):
             })
         return
 
+    def get_rect(self):
+        return self._rect
+
     def get_sprites(self):
-        return self._pile.get_entries()
+        return tuple([self._background_sprite]) + self._pile.get_entries()
 
     def get_elements(self):
         return tuple([self._pile_element, self._sync_click_handler_rect_element])

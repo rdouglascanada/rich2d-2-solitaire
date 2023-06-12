@@ -46,10 +46,12 @@ klondike_pile_models = []
 klondike_pile_rects = [(30, 200, 80, 120), (140, 200, 80, 120), (250, 200, 80, 120),
                        (360, 200, 80, 120), (470, 200, 80, 120), (580, 200, 80, 120),
                        (690, 200, 80, 120)]
+klondike_background_sprites = []
 for klondike_pile_rect in klondike_pile_rects:
     klondike_pile_models.append(KlondikePileModel(rect=klondike_pile_rect,
                                                   selection_model=selection_model,
-                                                  card_image_sheet=card_images))
+                                                  card_image_sheet=card_images,
+                                                  background_image=card_collection_background_image))
 
 
 def on_draw_collection_click():
