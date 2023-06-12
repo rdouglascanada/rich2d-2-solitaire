@@ -34,6 +34,13 @@ class KlondikePileModel(Model):
                 handler_rect.update(card_sprite_rect)
 
         self._sync_click_handler_rect_element = Element(on_update=sync_click_handler_rects)
+
+        def ensure_last_card_sprite_is_always_shown():
+            if not self.is_empty() and self._selection_model.is_empty():
+                self._pile.get_entries()[-1].show()
+            return
+
+        self._show_last_card_element = Element(on_update=ensure_last_card_sprite_is_always_shown)
         return
 
     def get_card_collection(self):
@@ -43,6 +50,9 @@ class KlondikePileModel(Model):
         for card_sprite in self._pile.get_entries()[:-1]:
             card_sprite.hide()
         return
+
+    def is_empty(self):
+        return len(self._pile.get_entries()) == 0
 
     def insert(self, card):
         card_sprite = CardSprite(rect=(0, 0, 0, 0), shown=True,
@@ -72,7 +82,7 @@ class KlondikePileModel(Model):
         return tuple([self._background_sprite]) + self._pile.get_entries()
 
     def get_elements(self):
-        return tuple([self._pile_element, self._sync_click_handler_rect_element])
+        return tuple([self._pile_element, self._sync_click_handler_rect_element, self._show_last_card_element])
 
     def get_handlers(self):
         return tuple(value['handler'] for value in self._on_click_handlers_map if value['card_sprite'].is_shown())
