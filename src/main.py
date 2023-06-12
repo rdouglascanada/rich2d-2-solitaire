@@ -60,16 +60,6 @@ def on_draw_collection_click():
     return
 
 
-def undo_selection():
-    if selection_model.is_empty():
-        return
-    selected_cards = selection_model.remove_all()
-    last_selected_collection = selection_model.get_last_selected_collection()
-    for card in selected_cards:
-        last_selected_collection.insert(card)
-    return
-
-
 def draw_card():
     if not deck_collection.is_empty():
         draw_collection.insert(deck_collection.draw())
@@ -79,7 +69,6 @@ def draw_card():
     return
 
 
-default_on_release_handler = MouseHandler(on_left_mouse_release=undo_selection)
 deck_collection_handler = MouseHandler(rect=deck_collection_sprite.get_rect(),
                                        on_left_mouse_click=draw_card)
 draw_collection_handler = MouseHandler(rect=draw_collection_sprite.get_rect(),
@@ -87,7 +76,7 @@ draw_collection_handler = MouseHandler(rect=draw_collection_sprite.get_rect(),
 
 
 sprites = [deck_collection_background_sprite, deck_collection_sprite, draw_collection_sprite]
-handlers = [deck_collection_handler, draw_collection_handler, default_on_release_handler]
+handlers = [deck_collection_handler, draw_collection_handler]
 
 game_model = ModelGroup(models=klondike_pile_models + suit_collection_models +
                                [Model(sprites=sprites, handlers=handlers), selection_model])

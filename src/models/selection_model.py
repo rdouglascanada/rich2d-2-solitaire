@@ -1,6 +1,7 @@
 import pygame
 from rich2d.models import Model
 from rich2d.elements import Element
+from rich2d.handlers import MouseHandler
 from rich2d.elements.pile import Pile, PileElement
 from sprites import CardSprite
 
@@ -24,6 +25,17 @@ class SelectionModel(Model):
         self._pile_element = PileElement(pile=self._pile, direction=PileElement.PileElementDirection.DOWN, spacing=20)
         self._last_selected_collection = None
         self._card_sprite_to_show = None
+
+        def undo_selection():
+            if self.is_empty():
+                return
+            selected_cards = self.remove_all()
+            last_selected_collection = self.get_last_selected_collection()
+            for card in selected_cards:
+                last_selected_collection.insert(card)
+            return
+
+        self._mouse_handler = MouseHandler(on_left_mouse_release=undo_selection)
         return
 
     def is_empty(self):
@@ -64,4 +76,4 @@ class SelectionModel(Model):
         return self._pile.get_entries()
 
     def get_handlers(self):
-        return tuple([])
+        return tuple([self._mouse_handler])
