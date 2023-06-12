@@ -5,6 +5,7 @@ from rich2d.sprites.images import Image
 from cards import Card, Deck, CardCollection
 from sprites import CardSprite, CardImageSheet, CardCollectionSprite, CardCollectionBackgroundSprite
 from selection_model import SelectionModel
+from klondike_pile_model import KlondikePileModel
 
 window_width = 800
 window_height = 600
@@ -48,22 +49,16 @@ suit4_collection_sprite = CardCollectionSprite(card_collection=suit4_collection,
 suit4_collection_background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=suit4_collection_sprite,
                                                                     background_image=card_collection_background_image)
 
-klondike1_sprite = CardSprite(card=Card(rank=12, suit=Card.Suit.SPADES), card_image_sheet=card_images,
-                              rect=(30, 200, 80, 120), shown=True)
-klondike2_sprite = CardSprite(card=Card(rank=3, suit=Card.Suit.CLUBS), card_image_sheet=card_images,
-                              rect=(140, 200, 80, 120), shown=False)
-klondike3_sprite = CardSprite(card=Card(rank=4, suit=Card.Suit.CLUBS), card_image_sheet=card_images,
-                              rect=(250, 200, 80, 120), shown=False)
-klondike4_sprite = CardSprite(card=Card(rank=5, suit=Card.Suit.CLUBS), card_image_sheet=card_images,
-                              rect=(360, 200, 80, 120), shown=False)
-klondike5_sprite = CardSprite(card=Card(rank=6, suit=Card.Suit.CLUBS), card_image_sheet=card_images,
-                              rect=(470, 200, 80, 120), shown=False)
-klondike6_sprite = CardSprite(card=Card(rank=7, suit=Card.Suit.CLUBS), card_image_sheet=card_images,
-                              rect=(580, 200, 80, 120), shown=False)
-klondike7_sprite = CardSprite(card=Card(rank=8, suit=Card.Suit.CLUBS), card_image_sheet=card_images,
-                              rect=(690, 200, 80, 120), shown=False)
-
 selection_model = SelectionModel(card_image_sheet=card_images)
+
+klondike_pile_models = []
+klondike_pile_rects = [(30, 200, 80, 120), (140, 200, 80, 120), (250, 200, 80, 120),
+                       (360, 200, 80, 120), (470, 200, 80, 120), (580, 200, 80, 120),
+                       (690, 200, 80, 120)]
+for klondike_pile_rect in klondike_pile_rects:
+    klondike_pile_models.append(KlondikePileModel(rect=klondike_pile_rect,
+                                                  selection_model=selection_model,
+                                                  card_image_sheet=card_images))
 
 
 def on_draw_collection_click():
@@ -147,11 +142,9 @@ suit_collection_handlers = [suit_collection_handler(suit_collection_sprite)
 sprites = [deck_collection_background_sprite, deck_collection_sprite, draw_collection_sprite,
            suit1_collection_background_sprite, suit2_collection_background_sprite,
            suit3_collection_background_sprite, suit4_collection_background_sprite,
-           suit1_collection_sprite, suit2_collection_sprite, suit3_collection_sprite, suit4_collection_sprite,
-           klondike1_sprite, klondike2_sprite, klondike3_sprite, klondike4_sprite,
-           klondike5_sprite, klondike6_sprite, klondike7_sprite]
+           suit1_collection_sprite, suit2_collection_sprite, suit3_collection_sprite, suit4_collection_sprite]
 handlers = suit_collection_handlers + [deck_collection_handler, draw_collection_handler, default_on_release_handler]
 
-game_model = ModelGroup(models=[Model(sprites=sprites, handlers=handlers), selection_model])
+game_model = ModelGroup(models=klondike_pile_models + [Model(sprites=sprites, handlers=handlers), selection_model])
 solitaire_game = Game(model=game_model, config=game_config)
 solitaire_game.run()

@@ -23,6 +23,7 @@ class SelectionModel(Model):
         self._mouse_sync_element = Element(on_update=sync_pile_rect_with_mouse)
         self._pile_element = PileElement(pile=self._pile, direction=PileElement.PileElementDirection.DOWN, spacing=20)
         self._last_selected_collection = None
+        self._card_sprite_to_show = None
         return
 
     def is_empty(self):
@@ -36,6 +37,13 @@ class SelectionModel(Model):
 
     def set_last_selected_collection(self, card_collection):
         self._last_selected_collection = card_collection
+        return
+
+    def get_card_sprite_to_show(self):
+        return self._card_sprite_to_show
+
+    def set_card_sprite_to_show(self, card_sprite_to_show):
+        self._card_sprite_to_show = card_sprite_to_show
         return
 
     def add_card(self, card, shown=True):
