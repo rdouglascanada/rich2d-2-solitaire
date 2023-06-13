@@ -22,7 +22,7 @@ draw_collection_model = DrawCollectionModel(rect=(140, 50, 80, 120),
 deck_collection_model = DeckCollectionModel(rect=(30, 50, 80, 120),
                                             selection_model=selection_model,
                                             card_image_sheet=card_images,
-                                            background_image=card_collection_background_image,
+                                            background_image=deck_collection_background_image,
                                             draw_collection_model=draw_collection_model)
 
 suit_collection_models = []
