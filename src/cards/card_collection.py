@@ -11,11 +11,17 @@ class CardCollection:
         card = self._cards.pop()
         return card
 
-    def peek(self):
+    def last(self):
         return self._cards[-1]
+
+    def first(self):
+        return self._cards[0]
 
     def is_empty(self):
         return len(self._cards) == 0
 
     def get_cards(self):
         return tuple(self._cards)
+
+    def __len__(self):
+        return len(self._cards)

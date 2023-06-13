@@ -8,6 +8,10 @@ class Card:
         CLUBS = 2
         DIAMONDS = 3
 
+    class Colour(Enum):
+        RED = 0
+        BLACK = 1
+
     def __init__(self, rank=None, suit=None):
         if rank is None:
             raise RuntimeError("Card rank cannot be None")
@@ -27,6 +31,15 @@ class Card:
 
     def get_suit(self):
         return self._suit
+
+    def get_colour(self):
+        if self._suit == Card.Suit.SPADES or self._suit == Card.Suit.CLUBS:
+            colour = Card.Colour.BLACK
+        elif self._suit == Card.Suit.HEARTS or self._suit == Card.Suit.DIAMONDS:
+            colour = Card.Colour.RED
+        else:
+            raise RuntimeError(f"Card.get_colour unexpected suit {self._suit}")
+        return colour
 
     @staticmethod
     def get_all_suits():

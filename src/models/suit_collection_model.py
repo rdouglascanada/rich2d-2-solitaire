@@ -47,7 +47,7 @@ class SuitCollectionModel(Model):
             elif suit_collection.is_empty():
                 suit_collection.insert(selected_card)
             else:
-                top_card = suit_collection.peek()
+                top_card = suit_collection.last()
                 correct_suit = top_card.get_suit() == selected_card.get_suit()
                 correct_rank = top_card.get_rank() + 1 == selected_card.get_rank()
                 if correct_rank and correct_suit:
