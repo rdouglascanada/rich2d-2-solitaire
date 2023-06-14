@@ -3,10 +3,11 @@ from rich2d.models import Model
 from rich2d.elements import Element
 from rich2d.elements.pile import Pile, PileElement
 from rich2d.handlers import MouseHandler
+from cards import CardCollection
 from sprites import CardSprite, CardCollectionBackgroundSprite
 
 
-class KlondikePileModel(Model):
+class KlondikeCardCollectionModel(Model, CardCollection):
     def __init__(self, rect=None, selection_model=None, card_image_sheet=None, background_image=None):
         if rect is None:
             raise RuntimeError("KlondikePileModel rect cannot be None")
@@ -21,7 +22,7 @@ class KlondikePileModel(Model):
         self._pile_element = PileElement(pile=self._pile,
                                          direction=PileElement.PileElementDirection.DOWN,
                                          spacing=20)
-        self._background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=self,
+        self._background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=self._pile,
                                                                  background_image=background_image)
         self._selection_model = selection_model
         self._card_image_sheet = card_image_sheet
@@ -81,13 +82,13 @@ class KlondikePileModel(Model):
         self._sync_release_handler_rect_element = Element(on_update=sync_on_release_handler_rect)
         return
 
-    def get_card_collection(self):
-        return self
-
     def hide_all_but_last(self):
         for card_sprite in self._pile.get_entries()[:-1]:
             card_sprite.hide()
         return
+
+    def get_card_collection(self):
+        return self
 
     def is_empty(self):
         return len(self._pile.get_entries()) == 0
@@ -128,9 +129,6 @@ class KlondikePileModel(Model):
     def draw(self):
         card_sprite = self._pile.remove()
         return card_sprite.get_card()
-
-    def get_rect(self):
-        return self._rect
 
     def get_sprites(self):
         return tuple([self._background_sprite]) + self._pile.get_entries()

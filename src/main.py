@@ -3,7 +3,8 @@ from rich2d.models import ModelGroup
 from rich2d.sprites.images import Image
 from cards import Deck
 from sprites import CardImageSheet
-from models import SelectionModel, DeckCollectionModel, DrawCollectionModel, SuitCollectionModel, KlondikePileModel
+from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
+    SuitCollectionModel, KlondikeCardCollectionModel
 
 window_width = 800
 window_height = 600
@@ -38,10 +39,10 @@ klondike_pile_rects = [(30, 200, 80, 120), (140, 200, 80, 120), (250, 200, 80, 1
                        (360, 200, 80, 120), (470, 200, 80, 120), (580, 200, 80, 120),
                        (690, 200, 80, 120)]
 for klondike_pile_rect in klondike_pile_rects:
-    klondike_pile_models.append(KlondikePileModel(rect=klondike_pile_rect,
-                                                  selection_model=selection_model,
-                                                  card_image_sheet=card_images,
-                                                  background_image=card_collection_background_image))
+    klondike_pile_models.append(KlondikeCardCollectionModel(rect=klondike_pile_rect,
+                                                            selection_model=selection_model,
+                                                            card_image_sheet=card_images,
+                                                            background_image=card_collection_background_image))
 
 deck = Deck()
 deck.shuffle()
