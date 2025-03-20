@@ -42,7 +42,7 @@ class SelectionModel(Model):
         return self._pile.is_empty()
 
     def __len__(self):
-        return len(self._pile)
+        return len(self._pile.get_entries())
 
     def get_last_selected_collection(self):
         return self._last_selected_collection

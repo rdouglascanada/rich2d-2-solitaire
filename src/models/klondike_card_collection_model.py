@@ -58,7 +58,7 @@ class KlondikeCardCollectionModel(Model, CardCollection):
                     self.insert(card)
             else:
                 top_card = self.last()
-                correct_suit = top_card.get_colour() != selected_card.get_suit()
+                correct_suit = top_card.get_colour() != selected_card.get_colour()
                 correct_rank = top_card.get_rank() - 1 == selected_card.get_rank()
                 if correct_rank and correct_suit:
                     for card in selected_cards:
@@ -127,7 +127,7 @@ class KlondikeCardCollectionModel(Model, CardCollection):
         return
 
     def draw(self):
-        card_sprite = self._pile.remove()
+        card_sprite = self._pile.remove(self._pile.get_entries()[0])
         return card_sprite.get_card()
 
     def get_sprites(self):
