@@ -112,7 +112,7 @@ class KlondikeCardCollectionModel(Model, CardCollection):
 
         def on_click():
             if self._selection_model.is_empty():
-                removed_card_sprites = self._pile.remove_after_and_including(card_sprite)
+                removed_card_sprites = self._pile.remove(card_sprite)
                 for rcs in removed_card_sprites:
                     self._on_click_handlers_map.pop(0)
                     self._selection_model.add_card(rcs.get_card())
