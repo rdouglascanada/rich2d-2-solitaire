@@ -36,3 +36,6 @@ class DrawCollectionModel(Model):
 
     def get_card_collection(self):
         return self._draw_card_collection
+
+    def remove_all(self):
+        return self._draw_card_collection.remove_all()

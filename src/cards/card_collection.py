@@ -25,3 +25,8 @@ class CardCollection:
 
     def __len__(self):
         return len(self._cards)
+
+    def remove_all(self):
+        cards = self._cards[:]
+        self._cards.clear()
+        return cards

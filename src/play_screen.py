@@ -4,9 +4,10 @@ from cards import Deck
 from sprites import CardImageSheet
 from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
     SuitCollectionModel, KlondikeCardCollectionModel
+from rich2d.models.ui import MenuBar, MenuItem
 
 
-def solitaire_play_screen():
+def solitaire_play_screen(window_width):
     card_images = CardImageSheet(file_name="resources/card_sheets/old_windows.png", image_width=71, image_height=96)
     deck_collection_background_image = Image.load_from_file("resources/deck_background.png")
     card_collection_background_image = Image.load_from_file("resources/empty_collection.png")
@@ -40,24 +41,32 @@ def solitaire_play_screen():
                                                                 card_image_sheet=card_images,
                                                                 background_image=card_collection_background_image))
 
-    deck = Deck()
-    deck.shuffle()
-    cards = deck.get_cards()
-    c = 0
+    def new_game():
+        for pile_model in klondike_pile_models + suit_collection_models + [deck_collection_model, draw_collection_model]:
+            pile_model.remove_all()
 
-    for i in range(len(klondike_pile_models)):
-        klondike_pile_model = klondike_pile_models[i]
-        klondike_card_collection = klondike_pile_model.get_card_collection()
-        for j in range(i + 1):
-            klondike_card_collection.insert(cards[c])
-            c += 1
-        klondike_pile_model.hide_all_but_last()
+        deck = Deck()
+        deck.shuffle()
+        cards = deck.get_cards()
+        c = 0
 
-    deck_card_collection = deck_collection_model.get_card_collection()
-    for card in cards[c:]:
-        deck_card_collection.insert(card)
+        for i in range(len(klondike_pile_models)):
+            klondike_pile_model = klondike_pile_models[i]
+            klondike_card_collection = klondike_pile_model.get_card_collection()
+            for j in range(i + 1):
+                klondike_card_collection.insert(cards[c])
+                c += 1
+            klondike_pile_model.hide_all_but_last()
 
-    models = klondike_pile_models + suit_collection_models + [deck_collection_model, draw_collection_model,
+        deck_card_collection = deck_collection_model.get_card_collection()
+        for card in cards[c:]:
+            deck_card_collection.insert(card)
+        return
+
+    new_game()
+    menu_items = [MenuItem(label="New Game", on_select=new_game)]
+    menubar_model = MenuBar(rect=(0, 0, window_width, 25), menu_items=menu_items, max_menu_items=5)
+    models = klondike_pile_models + suit_collection_models + [menubar_model, deck_collection_model, draw_collection_model,
                                                               selection_model]
     return ModelGroup(models=models)
 

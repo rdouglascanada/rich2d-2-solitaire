@@ -9,7 +9,7 @@ game_config = GameConfig(window_width=window_width, window_height=window_height,
                          window_title="Solitaire", background_colour="darkgreen")
 game_state = State(value="title")
 title_model = solitaire_title_screen(window_width, window_height, game_state)
-play_model = solitaire_play_screen()
+play_model = solitaire_play_screen(window_width)
 
 state_map = {'title': title_model, 'play': play_model}
 game_model = StateModel(state=game_state, state_map=state_map)

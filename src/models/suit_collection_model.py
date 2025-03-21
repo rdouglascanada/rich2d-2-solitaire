@@ -62,5 +62,9 @@ class SuitCollectionModel(Model):
 
         sprites = [suit_collection_background_sprite, suit_collection_sprite]
         handlers = [mouse_handler]
+        self._card_collection = suit_collection_sprite.get_card_collection()
         super().__init__(sprites=sprites, handlers=handlers)
         return
+
+    def remove_all(self):
+        return self._card_collection.remove_all()

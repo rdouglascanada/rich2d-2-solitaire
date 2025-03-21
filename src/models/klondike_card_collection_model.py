@@ -140,3 +140,6 @@ class KlondikeCardCollectionModel(Model, CardCollection):
     def get_handlers(self):
         return tuple([self._on_release_handler]) +\
             tuple(value['handler'] for value in self._on_click_handlers_map if value['card_sprite'].is_shown())
+
+    def remove_all(self):
+        return self._pile.remove_all()
