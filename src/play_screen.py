@@ -8,7 +8,7 @@ from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
 from rich2d.models.ui import MenuBar, MenuItem
 
 
-def solitaire_play_screen(window_width):
+def solitaire_play_screen(window_width, game_state):
     card_images = CardImageSheet(file_name="resources/card_sheets/old_windows.png", image_width=71, image_height=96)
     deck_collection_background_image = Image.load_from_file("resources/deck_background.png")
     card_collection_background_image = Image.load_from_file("resources/empty_collection.png")
@@ -64,14 +64,22 @@ def solitaire_play_screen(window_width):
             deck_card_collection.insert(card)
         return
 
+    def view_help():
+        game_state.set_value("help")
+        return
+
     def quit_game():
         exit_game()
         return
 
-    new_game()
-    menu_items = [MenuItem(label="New Game", on_select=new_game), MenuItem(label="Quit Game", on_select=quit_game)]
+    menu_items = [
+        MenuItem(label="New Game", on_select=new_game),
+        MenuItem(label="Help", on_select=view_help),
+        MenuItem(label="Quit Game", on_select=quit_game)
+    ]
     menubar_model = MenuBar(rect=(0, 0, window_width, 25), menu_items=menu_items, max_menu_items=5)
     models = klondike_pile_models + suit_collection_models + [menubar_model, deck_collection_model, draw_collection_model,
                                                               selection_model]
+    new_game()
     return ModelGroup(models=models)
 
