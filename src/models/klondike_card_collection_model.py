@@ -8,7 +8,7 @@ from sprites import CardSprite, CardCollectionBackgroundSprite
 
 
 class KlondikeCardCollectionModel(Model, CardCollection):
-    def __init__(self, rect=None, selection_model=None, card_image_sheet=None, background_image=None):
+    def __init__(self, rect=None, selection_model=None, card_image_sheet=None, background_image=None, undo_stack=None):
         if rect is None:
             raise RuntimeError("KlondikePileModel rect cannot be None")
         if selection_model is None:
@@ -17,6 +17,8 @@ class KlondikeCardCollectionModel(Model, CardCollection):
             raise RuntimeError("KlondikePileModel card_image_sheet cannot be None")
         if background_image is None:
             raise RuntimeError("KlondikePileModel background_image cannot be None")
+        if undo_stack is None:
+            raise RuntimeError("KlondikePileModel undo_stack cannot be None")
         self._rect = pygame.Rect(rect)
         self._pile = Pile(rect=rect)
         self._pile_element = PileElement(pile=self._pile,
@@ -49,6 +51,30 @@ class KlondikeCardCollectionModel(Model, CardCollection):
             selected_cards = selection_model.remove_all()
             selected_card = selected_cards[0]
             last_selected_collection = selection_model.get_last_selected_collection()
+            number_of_selected_cards = len(selected_cards)
+            if isinstance(last_selected_collection, KlondikeCardCollectionModel):
+                shown_count = number_of_selected_cards
+                for card_sprite in last_selected_collection._pile.get_entries():
+                    if card_sprite.is_shown():
+                        shown_count += 1
+
+
+            def add_back_cards():
+                temp_list = []
+                for i in range(number_of_selected_cards):
+                    temp_list.append(self.draw())
+                for i in range(number_of_selected_cards):
+                    last_selected_collection.insert(temp_list.pop())
+                if isinstance(last_selected_collection, KlondikeCardCollectionModel):
+                    s = 0
+                    entries = last_selected_collection._pile.get_entries()
+                    for sprite in entries:
+                        if s + shown_count < len(entries):
+                            sprite.hide()
+                        else:
+                            sprite.show()
+                        s += 1
+                return
 
             if self.is_empty() and selected_card.get_rank() != 13:
                 for card in selected_cards:
@@ -56,6 +82,7 @@ class KlondikeCardCollectionModel(Model, CardCollection):
             elif self.is_empty():
                 for card in selected_cards:
                     self.insert(card)
+                undo_stack.push(on_undo=add_back_cards)
             else:
                 top_card = self.last()
                 correct_suit = top_card.get_colour() != selected_card.get_colour()
@@ -63,6 +90,7 @@ class KlondikeCardCollectionModel(Model, CardCollection):
                 if correct_rank and correct_suit:
                     for card in selected_cards:
                         self.insert(card)
+                    undo_stack.push(on_undo=add_back_cards)
                 else:
                     for card in selected_cards:
                         last_selected_collection.insert(card)
@@ -127,7 +155,7 @@ class KlondikeCardCollectionModel(Model, CardCollection):
         return
 
     def draw(self):
-        card_sprite = self._pile.remove(self._pile.get_entries()[0])
+        card_sprite = self._pile.remove(self._pile.get_entries()[len(self._pile) - 1])[0]
         return card_sprite.get_card()
 
     def get_sprites(self):

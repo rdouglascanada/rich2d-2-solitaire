@@ -1,7 +1,7 @@
 from rich2d.game import exit_game
 from rich2d.models import ModelGroup
 from rich2d.sprites.images import Image
-from game import Deck
+from game import Deck, UndoStack
 from sprites import CardImageSheet
 from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
     SuitCollectionModel, KlondikeCardCollectionModel
@@ -12,6 +12,7 @@ def solitaire_play_screen(window_width, game_state):
     card_images = CardImageSheet(file_name="resources/card_sheets/old_windows.png", image_width=71, image_height=96)
     deck_collection_background_image = Image.load_from_file("resources/deck_background.png")
     card_collection_background_image = Image.load_from_file("resources/empty_collection.png")
+    undo_stack = UndoStack()
 
     selection_model = SelectionModel(card_image_sheet=card_images)
 
@@ -22,7 +23,8 @@ def solitaire_play_screen(window_width, game_state):
                                                 selection_model=selection_model,
                                                 card_image_sheet=card_images,
                                                 background_image=deck_collection_background_image,
-                                                draw_collection_model=draw_collection_model)
+                                                draw_collection_model=draw_collection_model,
+                                                undo_stack=undo_stack)
 
     suit_collection_models = []
     suit_collection_rects = [(360, 50, 80, 120), (470, 50, 80, 120), (580, 50, 80, 120), (690, 50, 80, 120)]
@@ -30,7 +32,8 @@ def solitaire_play_screen(window_width, game_state):
         suit_collection_models.append(SuitCollectionModel(rect=suit_collection_rect,
                                                           selection_model=selection_model,
                                                           card_image_sheet=card_images,
-                                                          background_image=card_collection_background_image))
+                                                          background_image=card_collection_background_image,
+                                                          undo_stack=undo_stack))
 
     klondike_pile_models = []
     klondike_pile_rects = [(30, 200, 80, 120), (140, 200, 80, 120), (250, 200, 80, 120),
@@ -40,11 +43,13 @@ def solitaire_play_screen(window_width, game_state):
         klondike_pile_models.append(KlondikeCardCollectionModel(rect=klondike_pile_rect,
                                                                 selection_model=selection_model,
                                                                 card_image_sheet=card_images,
-                                                                background_image=card_collection_background_image))
+                                                                background_image=card_collection_background_image,
+                                                                undo_stack=undo_stack))
 
     def new_game():
         for pile_model in klondike_pile_models + suit_collection_models + [deck_collection_model, draw_collection_model]:
             pile_model.remove_all()
+        undo_stack.remove_all()
 
         deck = Deck()
         deck.shuffle()
@@ -64,6 +69,10 @@ def solitaire_play_screen(window_width, game_state):
             deck_card_collection.insert(card)
         return
 
+    def undo():
+        undo_stack.undo()
+        return
+
     def view_help():
         game_state.set_value("help")
         return
@@ -74,6 +83,7 @@ def solitaire_play_screen(window_width, game_state):
 
     menu_items = [
         MenuItem(label="New Game", on_select=new_game),
+        MenuItem(label="Undo", on_select=undo),
         MenuItem(label="Help", on_select=view_help),
         MenuItem(label="Quit Game", on_select=quit_game)
     ]
