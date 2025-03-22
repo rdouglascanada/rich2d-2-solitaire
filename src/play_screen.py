@@ -1,3 +1,4 @@
+from rich2d.game import exit_game
 from rich2d.models import ModelGroup
 from rich2d.sprites.images import Image
 from cards import Deck
@@ -63,8 +64,12 @@ def solitaire_play_screen(window_width):
             deck_card_collection.insert(card)
         return
 
+    def quit_game():
+        exit_game()
+        return
+
     new_game()
-    menu_items = [MenuItem(label="New Game", on_select=new_game)]
+    menu_items = [MenuItem(label="New Game", on_select=new_game), MenuItem(label="Quit Game", on_select=quit_game)]
     menubar_model = MenuBar(rect=(0, 0, window_width, 25), menu_items=menu_items, max_menu_items=5)
     models = klondike_pile_models + suit_collection_models + [menubar_model, deck_collection_model, draw_collection_model,
                                                               selection_model]
