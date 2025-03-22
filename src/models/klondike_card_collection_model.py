@@ -3,7 +3,7 @@ from rich2d.models import Model
 from rich2d.elements import Element
 from rich2d.elements.pile import Pile, PileElement
 from rich2d.handlers import MouseHandler
-from cards import CardCollection
+from game import CardCollection
 from sprites import CardSprite, CardCollectionBackgroundSprite
 
 

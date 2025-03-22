@@ -18,7 +18,7 @@ def solitaire_help_screen(window_width, window_height, game_state):
     line1 = Text(rect=(50, 50, 700, 20), text="Welcome to Solitaire!",
                  colour="black", font_size=25, font_name="calibri",
                  font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
-    line2 = Text(rect=(50, 90, 700, 20), text="The object of the game is to get all of the cards into the four piles ",
+    line2 = Text(rect=(50, 90, 700, 20), text="The object of the game is to get all of the game into the four piles ",
                  colour="black", font_size=25, font_name="calibri",
                  font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
     line3 = Text(rect=(50, 120, 700, 20), text="in the top right of the playing area.",
@@ -39,7 +39,7 @@ def solitaire_help_screen(window_width, window_height, game_state):
     line8 = Text(rect=(50, 290, 700, 20), text="their destination, and then releasing the mouse button.",
                  colour="black", font_size=25, font_name="calibri",
                  font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
-    line9 = Text(rect=(50, 320, 700, 20), text="Only face-up cards are allowed to be moved.",
+    line9 = Text(rect=(50, 320, 700, 20), text="Only face-up game are allowed to be moved.",
                  colour="black", font_size=25, font_name="calibri",
                  font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
     line10 = Text(rect=(50, 360, 700, 20), text="Cards in the four piles in the top right need to be in sequence",
@@ -51,16 +51,16 @@ def solitaire_help_screen(window_width, window_height, game_state):
     line12 = Text(rect=(50, 420, 700, 20), text="an empty pile. After that, it will be the next card in sequence.",
                   colour="black", font_size=25, font_name="calibri",
                   font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
-    line13 = Text(rect=(50, 460, 700, 20), text="Faceup cards in the bottom piles follow a sequence of King to Ace.",
+    line13 = Text(rect=(50, 460, 700, 20), text="Faceup game in the bottom piles follow a sequence of King to Ace.",
                   colour="black", font_size=25, font_name="calibri",
                   font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
     line14 = Text(rect=(50, 490, 700, 20), text="Here the suit is not the same but needs to alternate in colour.",
                   colour="black", font_size=25, font_name="calibri",
                   font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
-    line15 = Text(rect=(50, 520, 700, 20), text="Facedown cards are turned faceup when the faceup card in front",
+    line15 = Text(rect=(50, 520, 700, 20), text="Facedown game are turned faceup when the faceup card in front",
                   colour="black", font_size=25, font_name="calibri",
                   font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
-    line16 = Text(rect=(50, 550, 700, 20), text="is moved. Multiple cards may be moved at the same time.",
+    line16 = Text(rect=(50, 550, 700, 20), text="is moved. Multiple game may be moved at the same time.",
                   colour="black", font_size=25, font_name="calibri",
                   font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
     sprites = [background_rectangle, line1, line2, line3, line4,

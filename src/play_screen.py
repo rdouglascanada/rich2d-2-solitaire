@@ -1,7 +1,7 @@
 from rich2d.game import exit_game
 from rich2d.models import ModelGroup
 from rich2d.sprites.images import Image
-from cards import Deck
+from game import Deck
 from sprites import CardImageSheet
 from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
     SuitCollectionModel, KlondikeCardCollectionModel
