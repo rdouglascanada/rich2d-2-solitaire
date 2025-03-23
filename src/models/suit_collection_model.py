@@ -41,6 +41,7 @@ class SuitCollectionModel(Model):
                 last_selected_collection = selection_model.get_last_selected_collection()
                 for card in selected_cards:
                     last_selected_collection.insert(card)
+                return
             selected_card = selection_model.remove_all()[0]
             suit_collection = suit_collection_sprite.get_card_collection()
             last_selected_collection = selection_model.get_last_selected_collection()
