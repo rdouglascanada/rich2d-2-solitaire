@@ -4,18 +4,20 @@ from sprites import CardCollectionSprite, CardCollectionBackgroundSprite
 
 
 class DrawCollectionModel(Model):
-    def __init__(self, rect=None, selection_model=None, card_image_sheet=None):
+    def __init__(self, rect=None, selection_model=None, card_image_sheet=None, draw_card_collection=None):
         if rect is None:
             raise RuntimeError("DrawCollectionModel rect cannot be None")
         if selection_model is None:
             raise RuntimeError("DrawCollectionModel selection_model cannot be None")
         if card_image_sheet is None:
             raise RuntimeError("DrawCollectionModel card_image_sheet cannot be None")
+        if draw_card_collection is None:
+            raise RuntimeError("DrawCollectionModel draw_card_collection cannot be None")
 
-        draw_collection_sprite = CardCollectionSprite(card_image_sheet=card_image_sheet,
+        draw_collection_sprite = CardCollectionSprite(card_collection=draw_card_collection,
+                                                      card_image_sheet=card_image_sheet,
                                                       rect=rect,
                                                       shown=True)
-        draw_card_collection = draw_collection_sprite.get_card_collection()
         self._draw_card_collection = draw_card_collection
 
         def on_click():

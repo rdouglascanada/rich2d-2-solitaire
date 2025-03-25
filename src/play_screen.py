@@ -1,7 +1,7 @@
 from rich2d.game import exit_game
 from rich2d.models import ModelGroup
 from rich2d.sprites.images import Image
-from game import Deck, UndoStack
+from game import Deck, UndoStack, CardCollection, DeckManager
 from sprites import CardImageSheet
 from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
     SuitCollectionModel, KlondikeCardCollectionModel
@@ -15,17 +15,23 @@ def solitaire_play_screen(game_state):
     undo_stack = UndoStack()
 
     deck = Deck()
+    deck_card_collection = CardCollection()
+    draw_card_collection = CardCollection()
+    deck_manager = DeckManager(deck_card_collection=deck_card_collection,
+                               draw_card_collection=draw_card_collection,
+                               undo_stack=undo_stack)
     selection_model = SelectionModel(card_image_sheet=card_images)
 
     draw_collection_model = DrawCollectionModel(rect=(140, 50, 80, 120),
                                                 selection_model=selection_model,
-                                                card_image_sheet=card_images)
+                                                card_image_sheet=card_images,
+                                                draw_card_collection=draw_card_collection)
     deck_collection_model = DeckCollectionModel(rect=(30, 50, 80, 120),
                                                 selection_model=selection_model,
                                                 card_image_sheet=card_images,
                                                 background_image=deck_collection_background_image,
-                                                draw_collection_model=draw_collection_model,
-                                                undo_stack=undo_stack)
+                                                deck_card_collection=deck_card_collection,
+                                                deck_manager=deck_manager)
 
     suit_collection_models = []
     suit_collection_rects = [(360, 50, 80, 120), (470, 50, 80, 120), (580, 50, 80, 120), (690, 50, 80, 120)]
