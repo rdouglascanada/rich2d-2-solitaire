@@ -29,4 +29,4 @@ class CardImageSheet:
         return self._image_sheet.get_image_at(x_index=x_index, y_index=y_index)
 
     def get_card_back_image(self):
-        return self._image_sheet.get_image_at(x_index=0, y_index=4)
+        return self._image_sheet.get_image_at(x_index=0, y_index=len(CardImageSheet.SUIT_MAP))
