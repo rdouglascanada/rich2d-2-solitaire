@@ -17,7 +17,7 @@ def solitaire_play_screen(game_state):
     deck = Deck()
     deck_card_collection = CardCollection()
     draw_card_collection = CardCollection()
-    deck_manager = DeckDrawManager(deck_card_collection=deck_card_collection,
+    deck_draw_manager = DeckDrawManager(deck_card_collection=deck_card_collection,
                                    draw_card_collection=draw_card_collection,
                                    undo_stack=undo_stack)
     selection_model = SelectionModel(card_image_sheet=card_images)
@@ -31,7 +31,7 @@ def solitaire_play_screen(game_state):
                                                 card_image_sheet=card_images,
                                                 background_image=deck_collection_background_image,
                                                 deck_card_collection=deck_card_collection,
-                                                deck_manager=deck_manager)
+                                                deck_draw_manager=deck_draw_manager)
 
     suit_collection_models = []
     suit_collection_rects = [(360, 50, 80, 120), (470, 50, 80, 120), (580, 50, 80, 120), (690, 50, 80, 120)]
@@ -69,7 +69,6 @@ def solitaire_play_screen(game_state):
                 c += 1
             klondike_pile_model.hide_all_but_last()
 
-        deck_card_collection = deck_collection_model.get_card_collection()
         for card in cards[c:]:
             deck_card_collection.insert(card)
         return

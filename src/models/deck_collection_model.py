@@ -6,7 +6,7 @@ from sprites import CardCollectionSprite, CardCollectionBackgroundSprite
 class DeckCollectionModel(Model):
     def __init__(self, rect=None, selection_model=None, card_image_sheet=None,
                  background_image=None, deck_card_collection=None,
-                 deck_manager=None):
+                 deck_draw_manager=None):
         if rect is None:
             raise RuntimeError("DeckCollectionModel rect cannot be None")
         if selection_model is None:
@@ -17,7 +17,7 @@ class DeckCollectionModel(Model):
             raise RuntimeError("DeckCollectionModel background_image cannot be None")
         if deck_card_collection is None:
             raise RuntimeError("DeckCollectionModel deck_card_collection cannot be None")
-        if deck_manager is None:
+        if deck_draw_manager is None:
             raise RuntimeError("DeckCollectionModel deck_manager cannot be None")
 
         self._deck_card_collection = deck_card_collection
@@ -31,7 +31,7 @@ class DeckCollectionModel(Model):
 
 
         def on_click():
-            deck_manager.draw_or_refill_deck()
+            deck_draw_manager.draw_or_refill_deck()
             return
 
         mouse_handler = MouseHandler(rect=deck_collection_sprite.get_rect(),
