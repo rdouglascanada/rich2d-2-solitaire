@@ -1,7 +1,7 @@
 from rich2d.game import exit_game
 from rich2d.models import ModelGroup
 from rich2d.sprites.images import Image
-from game import Deck, UndoStack, CardCollection, DeckManager
+from game import Deck, UndoStack, CardCollection, DeckDrawManager
 from sprites import CardImageSheet
 from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
     SuitCollectionModel, KlondikeCardCollectionModel
@@ -17,9 +17,9 @@ def solitaire_play_screen(game_state):
     deck = Deck()
     deck_card_collection = CardCollection()
     draw_card_collection = CardCollection()
-    deck_manager = DeckManager(deck_card_collection=deck_card_collection,
-                               draw_card_collection=draw_card_collection,
-                               undo_stack=undo_stack)
+    deck_manager = DeckDrawManager(deck_card_collection=deck_card_collection,
+                                   draw_card_collection=draw_card_collection,
+                                   undo_stack=undo_stack)
     selection_model = SelectionModel(card_image_sheet=card_images)
 
     draw_collection_model = DrawCollectionModel(rect=(140, 50, 80, 120),

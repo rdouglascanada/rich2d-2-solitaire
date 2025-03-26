@@ -1,11 +1,11 @@
-class DeckManager:
+class DeckDrawManager:
     def __init__(self, deck_card_collection=None, draw_card_collection=None, undo_stack=None):
         if deck_card_collection is None:
-            raise RuntimeError("DeckManager deck_card_collection cannot be None")
+            raise RuntimeError("DeckDrawManager deck_card_collection cannot be None")
         if draw_card_collection is None:
-            raise RuntimeError("DeckManager draw_card_collection cannot be None")
+            raise RuntimeError("DeckDrawManager draw_card_collection cannot be None")
         if undo_stack is None:
-            raise RuntimeError("DeckManager undo_stack cannot be None")
+            raise RuntimeError("DeckDrawManager undo_stack cannot be None")
         self._deck_card_collection = deck_card_collection
         self._draw_card_collection = draw_card_collection
         self._undo_stack = undo_stack
