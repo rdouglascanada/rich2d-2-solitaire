@@ -1,15 +1,19 @@
+from game import CardCollection
+
 class DeckDrawManager:
-    def __init__(self, deck_card_collection=None, draw_card_collection=None, undo_stack=None):
-        if deck_card_collection is None:
-            raise RuntimeError("DeckDrawManager deck_card_collection cannot be None")
-        if draw_card_collection is None:
-            raise RuntimeError("DeckDrawManager draw_card_collection cannot be None")
+    def __init__(self, undo_stack=None):
         if undo_stack is None:
             raise RuntimeError("DeckDrawManager undo_stack cannot be None")
-        self._deck_card_collection = deck_card_collection
-        self._draw_card_collection = draw_card_collection
+        self._deck_card_collection = CardCollection()
+        self._draw_card_collection = CardCollection()
         self._undo_stack = undo_stack
         return
+
+    def get_deck_card_collection(self):
+        return self._deck_card_collection
+
+    def get_draw_card_collection(self):
+        return self._draw_card_collection
 
     def draw_or_refill_deck(self):
         deck_card_collection = self._deck_card_collection

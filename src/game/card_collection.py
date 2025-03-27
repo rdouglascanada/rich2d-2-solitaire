@@ -3,6 +3,9 @@ class CardCollection:
         self._cards = list(cards)
         return
 
+    def __len__(self):
+        return len(self._cards)
+
     def insert(self, card):
         self._cards.append(card)
         return
@@ -22,9 +25,6 @@ class CardCollection:
 
     def get_cards(self):
         return tuple(self._cards)
-
-    def __len__(self):
-        return len(self._cards)
 
     def remove_all(self):
         cards = self._cards[:]

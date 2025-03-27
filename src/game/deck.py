@@ -12,6 +12,8 @@ class Deck:
 
     def shuffle(self):
         shuffle(self._cards)
+        for card in self._cards:
+            card.show()
         return
 
     def get_cards(self):

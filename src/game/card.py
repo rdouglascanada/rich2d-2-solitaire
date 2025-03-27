@@ -12,7 +12,7 @@ class Card:
         RED = 0
         BLACK = 1
 
-    def __init__(self, rank=None, suit=None):
+    def __init__(self, rank=None, suit=None, shown=True):
         if rank is None:
             raise RuntimeError("Card rank cannot be None")
         if suit is None:
@@ -24,6 +24,7 @@ class Card:
 
         self._rank = rank
         self._suit = suit
+        self._shown = shown
         return
 
     def get_rank(self):
@@ -40,6 +41,17 @@ class Card:
         else:
             raise RuntimeError(f"Card.get_colour unexpected suit {self._suit}")
         return colour
+
+    def show(self):
+        self._shown = True
+        return
+
+    def hide(self):
+        self._shown = False
+        return
+
+    def is_shown(self):
+        return self._shown
 
     @staticmethod
     def get_all_suits():

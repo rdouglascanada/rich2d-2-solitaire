@@ -23,8 +23,13 @@ class CardCollectionSprite(Sprite):
     def draw(self, screen):
         if self._card_collection.is_empty():
             return
-        card_sprite = CardSprite(rect=self.get_rect(), card=self._card_collection.last(),
-                                 card_image_sheet=self._card_image_sheet, shown=self._shown)
+        card = self._card_collection.last()
+        if self._shown:
+            card.show()
+        else:
+            card.hide()
+        card_sprite = CardSprite(rect=self.get_rect(), card=card,
+                                 card_image_sheet=self._card_image_sheet)
         card_sprite.draw(screen)
         return
 

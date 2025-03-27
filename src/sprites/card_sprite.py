@@ -3,7 +3,7 @@ from rich2d.sprites.images import ImageSprite
 
 
 class CardSprite(Sprite):
-    def __init__(self, rect=None, card=None, card_image_sheet=None, shown=True):
+    def __init__(self, rect=None, card=None, card_image_sheet=None):
         if rect is None:
             raise RuntimeError("CardSprite rect cannot be None")
         if card is None:
@@ -13,8 +13,6 @@ class CardSprite(Sprite):
         super().__init__(rect=rect)
         self._card = card
         self._card_image_sheet = card_image_sheet
-        self._shown = shown
-
         self._front_sprite = ImageSprite(image=card_image_sheet.get_card_image(card=card), rect=rect)
         self._back_sprite = ImageSprite(image=card_image_sheet.get_card_back_image(), rect=rect)
         return
@@ -23,7 +21,7 @@ class CardSprite(Sprite):
         self._front_sprite.get_rect().update(self.get_rect())
         self._back_sprite.get_rect().update(self.get_rect())
 
-        if self._shown:
+        if self._card.is_shown():
             self._front_sprite.draw(screen)
         else:
             self._back_sprite.draw(screen)
@@ -31,14 +29,3 @@ class CardSprite(Sprite):
 
     def get_card(self):
         return self._card
-
-    def is_shown(self):
-        return self._shown
-
-    def show(self):
-        self._shown = True
-        return
-
-    def hide(self):
-        self._shown = False
-        return
