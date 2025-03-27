@@ -28,22 +28,15 @@ class KlondikeCollectionModel(Model):
         self._background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=self._pile,
                                                                  background_image=background_image)
         self._on_click_handlers_map = []
-        klondike_selection_logic = KlondikeSelectionLogic(card_collection=klondike_card_collection)
+        self._card_image_sheet = card_image_sheet
+        self._klondike_card_collection = klondike_card_collection
+        self._selection_manager = selection_manager
+        self._klondike_selection_logic = KlondikeSelectionLogic(card_collection=klondike_card_collection)
 
         def sync_pile_sprites_with_collection():
             card_collection = klondike_card_collection
             if len(self._pile) != len(card_collection):
-                self._pile.remove_all()
-                self._on_click_handlers_map.clear()
-
-                i = 0
-                for card in card_collection.get_cards():
-                    card_sprite = CardSprite(card=card, rect=(0, 0, 0, 0),
-                                             card_image_sheet=card_image_sheet)
-                    self._pile.add(card_sprite)
-                    self._add_click_handler(card_sprite, card_collection, selection_manager,
-                                            klondike_selection_logic, len(card_collection) - i)
-                    i += 1
+                self.refresh()
             return
 
         self._sync_pile_sprites_with_collection_element = Element(on_update=sync_pile_sprites_with_collection)
@@ -59,11 +52,11 @@ class KlondikeCollectionModel(Model):
 
         def on_release():
             selection_card_collection = selection_manager.get_card_collection()
-            if not klondike_selection_logic.can_receive_cards(selection_card_collection):
-                selection_manager.undo_selection()
+            if not self._klondike_selection_logic.can_receive_cards(selection_card_collection):
+                self._selection_manager.undo_selection()
             else:
-                selection_logic = selection_manager.get_selection_logic()
-                action, undo = selection_logic.move_cards(klondike_card_collection, selection_card_collection)
+                selection_logic = self._selection_manager.get_selection_logic()
+                action, undo = selection_logic.move_cards(self._klondike_card_collection, selection_card_collection)
                 action()
                 undo_stack.push(on_undo=undo)
             return
@@ -93,17 +86,29 @@ class KlondikeCollectionModel(Model):
         return tuple([self._on_release_handler]) +\
             tuple(value['handler'] for value in self._on_click_handlers_map if value['card_sprite'].get_card().is_shown())
 
-    def _add_click_handler(self, card_sprite, card_collection, selection_manager,
-                           klondike_selection_logic, number_of_cards_to_select):
+    def refresh(self):
+        self._pile.remove_all()
+        self._on_click_handlers_map.clear()
+
+        i = 0
+        for card in self._klondike_card_collection.get_cards():
+            card_sprite = CardSprite(card=card, rect=(0, 0, 0, 0),
+                                     card_image_sheet=self._card_image_sheet)
+            self._pile.add(card_sprite)
+            self._add_click_handler(card_sprite, len(self._klondike_card_collection) - i)
+            i += 1
+        return
+
+    def _add_click_handler(self, card_sprite, number_of_cards_to_select):
         def on_click():
-            selection_card_collection = selection_manager.get_card_collection()
+            selection_card_collection = self._selection_manager.get_card_collection()
             if selection_card_collection.is_empty():
                 cards_to_select = []
                 for j in range(number_of_cards_to_select):
-                    cards_to_select.append(card_collection.draw())
+                    cards_to_select.append(self._klondike_card_collection.draw())
                 for j in range(number_of_cards_to_select):
                     selection_card_collection.insert(cards_to_select.pop())
-                selection_manager.set_selection_logic(klondike_selection_logic)
+                self._selection_manager.set_selection_logic(self._klondike_selection_logic)
             return
 
 
