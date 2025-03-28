@@ -19,7 +19,7 @@ def solitaire_config_screen(game_state, config_manager):
                        font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
 
     background_colour_model_width = 100 + len(ConfigManager.background_colour_options()) * 50
-    background_colour_model = ConfigBackgroundColourModel(rect=(50, 90, background_colour_model_width, 50),
+    background_colour_model = ConfigBackgroundColourModel(rect=(30, 90, background_colour_model_width, 50),
                                                           config_manager=config_manager)
 
     background_rectangle = Rectangle(rect=(0, 0, 800, 600), colour="white")

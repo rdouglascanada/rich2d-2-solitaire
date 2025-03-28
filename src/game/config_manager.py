@@ -13,4 +13,4 @@ class ConfigManager:
     @staticmethod
     def background_colour_options():
         return tuple(["darkgreen", "cyan", "magenta", "yellow", "red", "blue", "green", "orange", "purple", "brown",
-                      "black", "gray"])
+                      "lightgray", "gray", "black"])
