@@ -1,14 +1,16 @@
 from rich2d.game import exit_game
-from rich2d.models import ModelGroup
+from rich2d.models import Model, ModelGroup
 from rich2d.models.ui import MenuBar, MenuItem
+from rich2d.elements import Element
+from rich2d.sprites.shapes import Rectangle
 from rich2d.sprites.images import Image
-from game import Deck, CardCollection, UndoStack, DeckDrawManager, SelectionManager, GameManager
+from game import GameManager
 from sprites import CardImageSheet
 from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
     SuitCollectionModel, KlondikeCollectionModel
 
 
-def solitaire_play_screen(game_state):
+def solitaire_play_screen(game_state, config_manager):
     card_images = CardImageSheet(file_name="resources/card_sheets/old_windows.png", image_width=71, image_height=96)
     deck_collection_background_image = Image.load_from_file("resources/deck_background.png")
     card_collection_background_image = Image.load_from_file("resources/empty_collection.png")
@@ -70,6 +72,10 @@ def solitaire_play_screen(game_state):
         game_state.set_value("help")
         return
 
+    def configure_game():
+        game_state.set_value("config")
+        return
+
     def quit_game():
         exit_game()
         return
@@ -78,11 +84,20 @@ def solitaire_play_screen(game_state):
         MenuItem(label="New Game", on_select=new_game),
         MenuItem(label="Undo", on_select=undo),
         MenuItem(label="Help", on_select=view_help),
+        MenuItem(label="Config", on_select=configure_game),
         MenuItem(label="Quit Game", on_select=quit_game)
     ]
     menubar_model = MenuBar(rect=(0, 0, 800, 25), menu_items=menu_items, max_menu_items=5)
-    models = klondike_pile_models + suit_collection_models + [menubar_model, deck_collection_model, draw_collection_model,
-                                                              selection_model]
+
+    background_rectangle = Rectangle(rect=(0, 0, 800, 600))
+    def sync_background_colour():
+        background_rectangle.set_colour(colour=config_manager.get_background_colour())
+        return
+    sync_background_element = Element(on_update=sync_background_colour)
+    background_model = Model(sprites=[background_rectangle], elements=[sync_background_element])
+
+    models = [background_model, menubar_model, deck_collection_model, draw_collection_model] + \
+              klondike_pile_models + suit_collection_models + [selection_model]
     new_game()
     return ModelGroup(models=models)
 

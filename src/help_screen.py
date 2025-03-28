@@ -1,5 +1,3 @@
-import pygame
-from rich2d.game import exit_game
 from rich2d.models import Model, ModelGroup
 from rich2d.sprites.shapes import Rectangle
 from rich2d.sprites.text import Text

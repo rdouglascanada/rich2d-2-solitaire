@@ -3,3 +3,5 @@ from .deck_collection_model import DeckCollectionModel
 from .draw_collection_model import DrawCollectionModel
 from .suit_collection_model import SuitCollectionModel
 from .klondike_collection_model import KlondikeCollectionModel
+from .config_background_colour_choice_model import ConfigBackgroundColourChoiceModel
+from .config_background_colour_model import ConfigBackgroundColourModel
