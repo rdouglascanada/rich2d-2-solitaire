@@ -56,3 +56,10 @@ class GameManager:
 
     def get_klondike_card_collections(self):
         return self._klondike_card_collections
+
+    def is_won(self):
+        total_number_of_cards = len(self._deck.get_cards())
+        number_of_cards_in_suit_collections = 0
+        for suit_collection in self._suit_card_collections:
+            number_of_cards_in_suit_collections += len(suit_collection)
+        return number_of_cards_in_suit_collections == total_number_of_cards

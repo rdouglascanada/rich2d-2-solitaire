@@ -7,7 +7,7 @@ from rich2d.sprites.images import Image
 from game import GameManager
 from sprites import CardImageSheet
 from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
-    SuitCollectionModel, KlondikeCollectionModel
+    SuitCollectionModel, KlondikeCollectionModel, YouWinModel
 
 
 def solitaire_play_screen(game_state, config_manager):
@@ -57,6 +57,8 @@ def solitaire_play_screen(game_state, config_manager):
                                                             background_image=card_collection_background_image,
                                                             undo_stack=game_manager.get_undo_stack()))
 
+    you_win_model = YouWinModel(rect=(30, 200, 740, 370), game_manager=game_manager)
+
     def new_game():
         game_manager.new_game()
         for klondike_pile_model in klondike_pile_models:
@@ -97,7 +99,7 @@ def solitaire_play_screen(game_state, config_manager):
     background_model = Model(sprites=[background_rectangle], elements=[sync_background_element])
 
     models = [background_model, menubar_model, deck_collection_model, draw_collection_model] + \
-              klondike_pile_models + suit_collection_models + [selection_model]
+              klondike_pile_models + suit_collection_models + [you_win_model, selection_model]
     new_game()
     return ModelGroup(models=models)
 
