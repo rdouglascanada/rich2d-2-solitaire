@@ -1,3 +1,4 @@
+from pygame import Rect
 from rich2d.models import Model
 from rich2d.sprites.shapes import Rectangle
 from rich2d.sprites.text import ScaledText
@@ -12,7 +13,8 @@ class YouWinModel(Model):
         self._game_manager = game_manager
 
         background_rectangle = Rectangle(rect=rect, colour="white")
-        text = ScaledText(rect=rect, text="You Win!",
+        text_rect = Rect(rect).inflate(-30, -10)
+        text = ScaledText(rect=text_rect, text="You Win!",
                           font_size=48, font_name="times", font_bold=True)
 
         super().__init__(sprites=[background_rectangle, text])
