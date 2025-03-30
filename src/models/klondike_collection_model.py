@@ -7,7 +7,7 @@ from sprites import CardSprite, CardCollectionBackgroundSprite
 
 class KlondikeCollectionModel(Model):
     def __init__(self, rect=None, selection_manager=None, card_image_sheet=None,
-                 klondike_card_collection=None, background_image=None):
+                 klondike_card_collection=None, background_image=None, config_manager=None):
         if rect is None:
             raise RuntimeError("KlondikeCollectionModel rect cannot be None")
         if selection_manager is None:
@@ -18,6 +18,8 @@ class KlondikeCollectionModel(Model):
             raise RuntimeError("KlondikeCollectionModel card_image_sheet cannot be None")
         if background_image is None:
             raise RuntimeError("KlondikeCollectionModel background_image cannot be None")
+        if config_manager is None:
+            raise RuntimeError("KlondikeCollectionModel config_manager cannot be None")
         self._pile = Pile(rect=rect)
         self._pile_element = PileElement(pile=self._pile,
                                          direction=PileElement.PileElementDirection.DOWN,
@@ -28,6 +30,7 @@ class KlondikeCollectionModel(Model):
         self._card_image_sheet = card_image_sheet
         self._klondike_card_collection = klondike_card_collection
         self._selection_manager = selection_manager
+        self._config_manager = config_manager
 
         def sync_pile_sprites_with_collection():
             card_collection = klondike_card_collection
@@ -84,7 +87,8 @@ class KlondikeCollectionModel(Model):
         i = 0
         for card in self._klondike_card_collection.get_cards():
             card_sprite = CardSprite(card=card, rect=(0, 0, 0, 0),
-                                     card_image_sheet=self._card_image_sheet)
+                                     card_image_sheet=self._card_image_sheet,
+                                     config_manager=self._config_manager)
             self._pile.add(card_sprite)
             self._add_click_handler(card_sprite, len(self._klondike_card_collection) - i)
             i += 1

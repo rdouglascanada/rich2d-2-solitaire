@@ -7,11 +7,13 @@ from sprites import CardSprite
 
 
 class SelectionModel(Model):
-    def __init__(self, card_image_sheet=None, selection_manager=None):
+    def __init__(self, card_image_sheet=None, selection_manager=None, config_manager=None):
         if card_image_sheet is None:
             raise RuntimeError("SelectionModel card_image_sheet cannot be None")
         if selection_manager is None:
             raise RuntimeError("SelectionModel selection_manager cannot be None")
+        if config_manager is None:
+            raise RuntimeError("SelectionModel config_manager cannot be None")
 
         self._pile = Pile(rect=(0, 0, 80, 120))
 
@@ -28,7 +30,8 @@ class SelectionModel(Model):
                 self._pile.remove_all()
                 for card in card_collection.get_cards():
                     card_sprite = CardSprite(card=card, rect=(0, 0, 0, 0),
-                                             card_image_sheet=card_image_sheet)
+                                             card_image_sheet=card_image_sheet,
+                                             config_manager=config_manager)
                     self._pile.add(card_sprite)
             return
 
