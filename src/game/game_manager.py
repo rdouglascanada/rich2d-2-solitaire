@@ -8,7 +8,7 @@ class GameManager:
     def __init__(self):
         self._deck = Deck()
         self._undo_stack = UndoStack()
-        self._selection_manager = SelectionManager()
+        self._selection_manager = SelectionManager(undo_stack=self._undo_stack)
         self._deck_draw_manager = DeckDrawManager(undo_stack=self._undo_stack)
         self._suit_card_collections = [CardCollection(), CardCollection(), CardCollection(), CardCollection()]
         self._klondike_card_collections = [CardCollection(), CardCollection(), CardCollection(),

@@ -39,8 +39,7 @@ def solitaire_play_screen(game_state, config_manager):
                                                           rect=rect,
                                                           selection_manager=game_manager.get_selection_manager(),
                                                           card_image_sheet=card_images,
-                                                          background_image=card_collection_background_image,
-                                                          undo_stack=game_manager.get_undo_stack()))
+                                                          background_image=card_collection_background_image))
 
     klondike_pile_models = []
     klondike_card_collections = game_manager.get_klondike_card_collections()
@@ -54,8 +53,7 @@ def solitaire_play_screen(game_state, config_manager):
                                                             rect=rect,
                                                             selection_manager=game_manager.get_selection_manager(),
                                                             card_image_sheet=card_images,
-                                                            background_image=card_collection_background_image,
-                                                            undo_stack=game_manager.get_undo_stack()))
+                                                            background_image=card_collection_background_image))
 
     you_win_model = YouWinModel(rect=(30, 200, 740, 370), game_manager=game_manager)
 

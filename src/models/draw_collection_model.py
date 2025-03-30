@@ -1,7 +1,6 @@
 from rich2d.models import Model
 from rich2d.handlers import MouseHandler
 from sprites import CardCollectionSprite
-from game.logic import DrawSelectionLogic
 
 
 class DrawCollectionModel(Model):
@@ -17,18 +16,13 @@ class DrawCollectionModel(Model):
             raise RuntimeError("DrawCollectionModel deck_draw_manager cannot be None")
 
         draw_card_collection = deck_draw_manager.get_draw_card_collection()
-        draw_selection_logic = DrawSelectionLogic(card_collection=draw_card_collection)
         draw_collection_sprite = CardCollectionSprite(card_collection=draw_card_collection,
                                                       card_image_sheet=card_image_sheet,
                                                       rect=rect,
                                                       shown=True)
 
         def on_click():
-            selection_card_collection = selection_manager.get_card_collection()
-            if selection_card_collection.is_empty() and not draw_card_collection.is_empty():
-                card = draw_card_collection.draw()
-                selection_card_collection.insert(card)
-                selection_manager.set_selection_logic(draw_selection_logic)
+            selection_manager.select_draw_collection(draw_card_collection)
             return
 
         mouse_handler = MouseHandler(rect=draw_collection_sprite.get_rect(),
