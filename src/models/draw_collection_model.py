@@ -5,14 +5,11 @@ from sprites import CardCollectionSprite
 
 class DrawCollectionModel(Model):
     def __init__(self, rect=None, selection_manager=None,
-                 card_image_sheet=None, deck_draw_manager=None,
-                 config_manager=None):
+                 deck_draw_manager=None, config_manager=None):
         if rect is None:
             raise RuntimeError("DrawCollectionModel rect cannot be None")
         if selection_manager is None:
             raise RuntimeError("DrawCollectionModel selection_manager cannot be None")
-        if card_image_sheet is None:
-            raise RuntimeError("DrawCollectionModel card_image_sheet cannot be None")
         if deck_draw_manager is None:
             raise RuntimeError("DrawCollectionModel deck_draw_manager cannot be None")
         if config_manager is None:
@@ -20,7 +17,6 @@ class DrawCollectionModel(Model):
 
         draw_card_collection = deck_draw_manager.get_draw_card_collection()
         draw_collection_sprite = CardCollectionSprite(card_collection=draw_card_collection,
-                                                      card_image_sheet=card_image_sheet,
                                                       rect=rect,
                                                       shown=True,
                                                       config_manager=config_manager)

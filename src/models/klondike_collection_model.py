@@ -6,7 +6,7 @@ from sprites import CardSprite, CardCollectionBackgroundSprite
 
 
 class KlondikeCollectionModel(Model):
-    def __init__(self, rect=None, selection_manager=None, card_image_sheet=None,
+    def __init__(self, rect=None, selection_manager=None,
                  klondike_card_collection=None, background_image=None, config_manager=None):
         if rect is None:
             raise RuntimeError("KlondikeCollectionModel rect cannot be None")
@@ -14,8 +14,6 @@ class KlondikeCollectionModel(Model):
             raise RuntimeError("KlondikeCollectionModel selection_manager cannot be None")
         if klondike_card_collection is None:
             raise RuntimeError("KlondikeCollectionModel klondike_card_collection cannot be None")
-        if card_image_sheet is None:
-            raise RuntimeError("KlondikeCollectionModel card_image_sheet cannot be None")
         if background_image is None:
             raise RuntimeError("KlondikeCollectionModel background_image cannot be None")
         if config_manager is None:
@@ -27,7 +25,6 @@ class KlondikeCollectionModel(Model):
         self._background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=self._pile,
                                                                  background_image=background_image)
         self._on_click_handlers_map = []
-        self._card_image_sheet = card_image_sheet
         self._klondike_card_collection = klondike_card_collection
         self._selection_manager = selection_manager
         self._config_manager = config_manager
@@ -39,7 +36,6 @@ class KlondikeCollectionModel(Model):
                 cards = card_collection.get_cards()[len(self._pile):]
                 for i in range(len(cards)):
                     card_sprite = CardSprite(card=cards[i], rect=(0, 0, 0, 0),
-                                             card_image_sheet=self._card_image_sheet,
                                              config_manager=self._config_manager)
                     self._pile.add(card_sprite)
                 self._refresh_click_handlers()
@@ -95,7 +91,6 @@ class KlondikeCollectionModel(Model):
         self._pile.remove_all()
         for card in self._klondike_card_collection.get_cards():
             card_sprite = CardSprite(card=card, rect=(0, 0, 0, 0),
-                                     card_image_sheet=self._card_image_sheet,
                                      config_manager=self._config_manager)
             self._pile.add(card_sprite)
         self._refresh_click_handlers()

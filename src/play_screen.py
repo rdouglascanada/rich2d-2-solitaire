@@ -5,29 +5,24 @@ from rich2d.elements import Element
 from rich2d.sprites.shapes import Rectangle
 from rich2d.sprites.images import Image
 from game import GameManager
-from sprites import CardImageSheet
 from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
     SuitCollectionModel, KlondikeCollectionModel, YouWinModel
 
 
 def solitaire_play_screen(game_state, config_manager):
-    card_images = CardImageSheet(file_name="resources/card_sheets/old_windows.png", image_width=71, image_height=96)
     deck_collection_background_image = Image.load_from_file("resources/deck_background.png")
     card_collection_background_image = Image.load_from_file("resources/empty_collection.png")
 
     game_manager = GameManager()
 
-    selection_model = SelectionModel(card_image_sheet=card_images,
-                                     selection_manager=game_manager.get_selection_manager(),
+    selection_model = SelectionModel(selection_manager=game_manager.get_selection_manager(),
                                      config_manager=config_manager)
     deck_collection_model = DeckCollectionModel(rect=(30, 50, 80, 120),
-                                                card_image_sheet=card_images,
                                                 background_image=deck_collection_background_image,
                                                 deck_draw_manager=game_manager.get_deck_draw_manager(),
                                                 config_manager=config_manager)
     draw_collection_model = DrawCollectionModel(rect=(140, 50, 80, 120),
                                                 selection_manager=game_manager.get_selection_manager(),
-                                                card_image_sheet=card_images,
                                                 deck_draw_manager=game_manager.get_deck_draw_manager(),
                                                 config_manager=config_manager)
 
@@ -41,7 +36,6 @@ def solitaire_play_screen(game_state, config_manager):
         suit_collection_models.append(SuitCollectionModel(suit_card_collection=suit_card_collection,
                                                           rect=rect,
                                                           selection_manager=game_manager.get_selection_manager(),
-                                                          card_image_sheet=card_images,
                                                           background_image=card_collection_background_image,
                                                           config_manager=config_manager))
 
@@ -56,7 +50,6 @@ def solitaire_play_screen(game_state, config_manager):
         klondike_pile_models.append(KlondikeCollectionModel(klondike_card_collection=klondike_card_collection,
                                                             rect=rect,
                                                             selection_manager=game_manager.get_selection_manager(),
-                                                            card_image_sheet=card_images,
                                                             background_image=card_collection_background_image,
                                                             config_manager=config_manager))
 

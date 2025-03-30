@@ -4,13 +4,10 @@ from sprites import CardCollectionSprite, CardCollectionBackgroundSprite
 
 
 class DeckCollectionModel(Model):
-    def __init__(self, rect=None, card_image_sheet=None,
-                 background_image=None, deck_draw_manager=None,
-                 config_manager=None):
+    def __init__(self, rect=None, background_image=None,
+                 deck_draw_manager=None, config_manager=None):
         if rect is None:
             raise RuntimeError("DeckCollectionModel rect cannot be None")
-        if card_image_sheet is None:
-            raise RuntimeError("DeckCollectionModel card_image_sheet cannot be None")
         if background_image is None:
             raise RuntimeError("DeckCollectionModel background_image cannot be None")
         if deck_draw_manager is None:
@@ -20,7 +17,6 @@ class DeckCollectionModel(Model):
 
         deck_card_collection = deck_draw_manager.get_deck_card_collection()
         deck_collection_sprite = CardCollectionSprite(card_collection=deck_card_collection,
-                                                      card_image_sheet=card_image_sheet,
                                                       rect=rect,
                                                       shown=False,
                                                       config_manager=config_manager)
