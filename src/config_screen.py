@@ -25,7 +25,7 @@ def solitaire_config_screen(game_state, config_manager):
     cardback_text_sprite = Text(rect=(50, 175, 700, 20), text="Card Back",
                                  colour="black", font_size=25, font_name="courier",
                                  font_bold=True, horizontal_alignment=Text.HorizontalAlignment.LEFT)
-    cardback_model = ConfigCardbackModel(rect=(30, 215, 740, 50), config_manager=config_manager)
+    cardback_model = ConfigCardbackModel(rect=(30, 215, 740, 100), config_manager=config_manager)
 
     background_rectangle = Rectangle(rect=(0, 0, 800, 600), colour="white")
     sprites = [background_rectangle, background_colour_text_sprite, cardback_text_sprite]

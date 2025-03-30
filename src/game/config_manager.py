@@ -3,7 +3,7 @@ from rich2d.sprites.images import ImageSheet
 class ConfigManager:
     def __init__(self):
         self._background_colour = "darkgreen"
-        self._cardback_image_sheet = ImageSheet(file_name="resources/card_sheets/cardbacks.png", image_width=80, image_height=60)
+        self._cardback_image_sheet = ImageSheet(file_name="resources/card_sheets/cardbacks.png", image_width=80, image_height=120)
         self._cardback_index = 0
         return
 
