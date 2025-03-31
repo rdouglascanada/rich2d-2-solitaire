@@ -1,4 +1,4 @@
-from rich2d.sprites.images import ImageSheet
+from rich2d.sprites.images import ImageSheet, Image
 from .card import Card
 
 class ConfigManager:
@@ -10,6 +10,8 @@ class ConfigManager:
     }
 
     def __init__(self):
+        self._deck_collection_background_image = Image.load_from_file("resources/deck_background.png")
+        self._card_collection_background_image = Image.load_from_file("resources/empty_collection.png")
         self._background_colour = "darkgreen"
         self._cardback_image_sheet = ImageSheet(file_name="resources/cardbacks.png",
                                                 image_width=80, image_height=120)
@@ -17,7 +19,14 @@ class ConfigManager:
                                                image_width=80, image_height=120)
         self._cardback_index = 0
         self._cardset_index = 0
+
         return
+
+    def get_deck_collection_background_image(self):
+        return self._deck_collection_background_image
+
+    def get_card_collection_background_image(self):
+        return self._card_collection_background_image
 
     def get_background_colour(self):
         return self._background_colour
@@ -53,6 +62,12 @@ class ConfigManager:
 
     def get_card_image(self, card=None):
         return self.get_card_image_at(card, self._cardset_index)
+
+    def get_maximum_cardset_index(self):
+        number_of_card_images = len(self._cardset_image_sheet.get_all_images())
+        number_of_cards_in_a_deck = len(Card.get_all_suits()) * len(Card.get_all_ranks())
+        maximum_index = number_of_card_images // number_of_cards_in_a_deck
+        return maximum_index
 
     def get_cardset_index(self):
         return self._cardset_index

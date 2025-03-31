@@ -8,3 +8,5 @@ from .config_background_colour_choice_model import ConfigBackgroundColourChoiceM
 from .config_background_colour_model import ConfigBackgroundColourModel
 from .config_cardback_choice_model import ConfigCardbackChoiceModel
 from .config_cardback_model import ConfigCardbackModel
+from .config_cardset_choice_model import ConfigCardsetChoiceModel
+from .config_cardset_model import ConfigCardsetModel

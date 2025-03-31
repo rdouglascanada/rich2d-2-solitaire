@@ -7,15 +7,13 @@ from sprites import CardSprite, CardCollectionBackgroundSprite
 
 class KlondikeCollectionModel(Model):
     def __init__(self, rect=None, selection_manager=None,
-                 klondike_card_collection=None, background_image=None, config_manager=None):
+                 klondike_card_collection=None, config_manager=None):
         if rect is None:
             raise RuntimeError("KlondikeCollectionModel rect cannot be None")
         if selection_manager is None:
             raise RuntimeError("KlondikeCollectionModel selection_manager cannot be None")
         if klondike_card_collection is None:
             raise RuntimeError("KlondikeCollectionModel klondike_card_collection cannot be None")
-        if background_image is None:
-            raise RuntimeError("KlondikeCollectionModel background_image cannot be None")
         if config_manager is None:
             raise RuntimeError("KlondikeCollectionModel config_manager cannot be None")
         self._pile = Pile(rect=rect)
@@ -23,7 +21,8 @@ class KlondikeCollectionModel(Model):
                                          direction=PileElement.PileElementDirection.DOWN,
                                          spacing=20)
         self._background_sprite = CardCollectionBackgroundSprite(card_collection_sprite=self._pile,
-                                                                 background_image=background_image)
+                                                                 background_image=config_manager.\
+                                                                 get_card_collection_background_image())
         self._on_click_handlers_map = []
         self._klondike_card_collection = klondike_card_collection
         self._selection_manager = selection_manager

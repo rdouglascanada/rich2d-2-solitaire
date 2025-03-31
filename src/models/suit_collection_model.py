@@ -5,15 +5,13 @@ from sprites import CardCollectionSprite, CardCollectionBackgroundSprite
 
 class SuitCollectionModel(Model):
     def __init__(self, rect=None, selection_manager=None,
-                 suit_card_collection=None, background_image=None, config_manager=None):
+                 suit_card_collection=None, config_manager=None):
         if rect is None:
             raise RuntimeError("SuitCollectionModel rect cannot be None")
         if selection_manager is None:
             raise RuntimeError("SuitCollectionModel selection_manager cannot be None")
         if suit_card_collection is None:
             raise RuntimeError("SuitCollectionModel suit_card_collection cannot be None")
-        if background_image is None:
-            raise RuntimeError("SuitCollectionModel background_image cannot be None")
         if config_manager is None:
             raise RuntimeError("SuitCollectionModel config_manager cannot be None")
 
@@ -23,7 +21,7 @@ class SuitCollectionModel(Model):
                                                       config_manager=config_manager)
         suit_collection_background_sprite = CardCollectionBackgroundSprite(
             card_collection_sprite=suit_collection_sprite,
-            background_image=background_image)
+            background_image=config_manager.get_card_collection_background_image())
 
         def on_click():
             selection_manager.select_suit_collection(suit_card_collection)

@@ -10,23 +10,16 @@ from models import SelectionModel, DeckCollectionModel, DrawCollectionModel,\
 
 
 def solitaire_play_screen(game_state, config_manager):
-    deck_collection_background_image = Image.load_from_file("resources/deck_background.png")
-    card_collection_background_image = Image.load_from_file("resources/empty_collection.png")
-
     game_manager = GameManager()
-
     selection_model = SelectionModel(selection_manager=game_manager.get_selection_manager(),
                                      config_manager=config_manager)
     deck_collection_model = DeckCollectionModel(rect=(30, 50, 80, 120),
-                                                background_image=deck_collection_background_image,
                                                 deck_draw_manager=game_manager.get_deck_draw_manager(),
                                                 config_manager=config_manager)
     draw_collection_model = DrawCollectionModel(rect=(140, 50, 80, 120),
                                                 selection_manager=game_manager.get_selection_manager(),
                                                 deck_draw_manager=game_manager.get_deck_draw_manager(),
                                                 config_manager=config_manager)
-
-
     suit_collection_models = []
     suit_card_collections = game_manager.get_suit_card_collections()
     suit_collection_rects = [(360, 50, 80, 120), (470, 50, 80, 120), (580, 50, 80, 120), (690, 50, 80, 120)]
@@ -36,9 +29,7 @@ def solitaire_play_screen(game_state, config_manager):
         suit_collection_models.append(SuitCollectionModel(suit_card_collection=suit_card_collection,
                                                           rect=rect,
                                                           selection_manager=game_manager.get_selection_manager(),
-                                                          background_image=card_collection_background_image,
                                                           config_manager=config_manager))
-
     klondike_pile_models = []
     klondike_card_collections = game_manager.get_klondike_card_collections()
     klondike_pile_rects = [(30, 200, 80, 120), (140, 200, 80, 120), (250, 200, 80, 120),
@@ -50,9 +41,7 @@ def solitaire_play_screen(game_state, config_manager):
         klondike_pile_models.append(KlondikeCollectionModel(klondike_card_collection=klondike_card_collection,
                                                             rect=rect,
                                                             selection_manager=game_manager.get_selection_manager(),
-                                                            background_image=card_collection_background_image,
                                                             config_manager=config_manager))
-
     you_win_model = YouWinModel(rect=(30, 200, 740, 370), game_manager=game_manager)
 
     def new_game():
